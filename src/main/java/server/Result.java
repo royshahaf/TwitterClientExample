@@ -1,4 +1,4 @@
-package app;
+package server;
 
 public class Result {
 	private final boolean status;

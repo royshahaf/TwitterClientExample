@@ -5,13 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import entities.EntityKind;
-import entities.Role;
-import roles.RolesFetcher;
+import roles.Role;
+import roles.RolesService;
 
-public class RolesFetcherStub implements RolesFetcher {
+public class RolesFetcherStub implements RolesService {
 
-	Map<EntityKind, Map<String, List<Role>>> roles;
+	Map<String, List<Role>> roles;
 
 	public RolesFetcherStub() {
 		populateTestMap();
@@ -19,22 +18,15 @@ public class RolesFetcherStub implements RolesFetcher {
 
 	private void populateTestMap() {
 		roles = new HashMap<>();
-		roles.put(EntityKind.ACTIVITY, new HashMap<String, List<Role>>());
-		roles.get(EntityKind.ACTIVITY).put("both", Arrays.asList(new Role[] { Role.ADMIN, Role.REGULAR }));
-		roles.get(EntityKind.ACTIVITY).put("regularOnly", Arrays.asList(new Role[] { Role.REGULAR }));
-		roles.get(EntityKind.ACTIVITY).put("adminOnly", Arrays.asList(new Role[] { Role.ADMIN }));
-		roles.get(EntityKind.ACTIVITY).put("empty", Arrays.asList(new Role[] {}));
-		roles.put(EntityKind.USER, new HashMap<String, List<Role>>());
-		roles.get(EntityKind.USER).put("both", Arrays.asList(new Role[] { Role.ADMIN, Role.REGULAR }));
-		roles.get(EntityKind.USER).put("regularOnly", Arrays.asList(new Role[] { Role.REGULAR }));
-		roles.get(EntityKind.USER).put("adminOnly", Arrays.asList(new Role[] { Role.ADMIN }));
-		roles.get(EntityKind.USER).put("empty", Arrays.asList(new Role[] {}));
-
+		roles.put("both", Arrays.asList(new Role[] { Role.ADMIN, Role.REGULAR }));
+		roles.put("regularOnly", Arrays.asList(new Role[] { Role.REGULAR }));
+		roles.put("adminOnly", Arrays.asList(new Role[] { Role.ADMIN }));
+		roles.put("empty", Arrays.asList(new Role[] {}));
 	}
 
 	@Override
-	public List<Role> fetchRoles(EntityKind entityKind, String id) {
-		return roles.get(entityKind).get(id);
+	public List<Role> getRoles(String id) {
+		return roles.get(id);
 	}
 
 }

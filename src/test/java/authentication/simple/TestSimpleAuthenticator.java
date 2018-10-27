@@ -1,4 +1,4 @@
-package authentication;
+package authentication.simple;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,15 +7,16 @@ import java.util.List;
 
 import org.junit.Test;
 
-import entities.EntityKind;
-import entities.Role;
-import roles.RolesFetcher;
+import authentication.RolesFetcherStub;
+import authentication.simple.SimpleAuthenticator;
+import roles.Role;
+import roles.RolesService;
 
-public class TestBasicActivityAuthenticator {
+public class TestSimpleAuthenticator {
 
-	private static final RolesFetcher rolesFetcher = new RolesFetcherStub();
+	private static final RolesService rolesFetcher = new RolesFetcherStub();
 
-	private static final BasicActivityAuthenticator authenticator = new BasicActivityAuthenticator(rolesFetcher);
+	private static final SimpleAuthenticator authenticator = new SimpleAuthenticator(rolesFetcher, rolesFetcher);
 
 	String[] ids = new String[] { "both", "adminOnly", "regularOnly", "empty", "null" };
 
@@ -25,8 +26,8 @@ public class TestBasicActivityAuthenticator {
 			for (int j = 0; j < ids.length; j++) {
 				boolean expected;
 				for (int k = 0; k < ids.length; k++) {
-					List<Role> requestingRoles = rolesFetcher.fetchRoles(EntityKind.USER, ids[j]);
-					List<Role> activityRoles = rolesFetcher.fetchRoles(EntityKind.ACTIVITY, ids[i]);
+					List<Role> requestingRoles = rolesFetcher.getRoles(ids[j]);
+					List<Role> activityRoles = rolesFetcher.getRoles(ids[i]);
 					if (requestingRoles == null || activityRoles == null) {
 						expected = false;
 					} else if (ids[k].equals(ids[j])) {

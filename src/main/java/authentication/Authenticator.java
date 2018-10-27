@@ -1,5 +1,5 @@
 package authentication;
 
-public interface ActivityAuthenticator {
+public interface Authenticator {
 	public boolean authenticate(String activityId, String requestingUsername, String requestedUsername);
 }
