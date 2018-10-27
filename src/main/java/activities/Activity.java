@@ -47,10 +47,12 @@ public class Activity {
 		} else if (!name.equals(other.name))
 			return false;
 		if (roles == null) {
-			if (other.roles != null)
+			if (other.roles != null) {
 				return false;
-		} else if (!roles.equals(other.roles))
+			}
+		} else if (!roles.equals(other.roles)) {
 			return false;
+		}
 		return true;
 	}
 }

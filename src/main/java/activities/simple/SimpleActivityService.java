@@ -11,12 +11,12 @@ public class SimpleActivityService implements ActivityService {
 
 	@Override
 	public Activity getActivity(String id) {
-		return new Activity(id, Arrays.asList(new Role[] { Role.ADMIN, Role.REGULAR }));
+		return new Activity(id, Arrays.asList(Role.ADMIN, Role.REGULAR));
 	}
 
 	@Override
 	public List<Role> getRoles(String id) {
-		return Arrays.asList(new Role[] { Role.ADMIN, Role.REGULAR });
+		return Arrays.asList(Role.ADMIN, Role.REGULAR);
 	}
 
 }
