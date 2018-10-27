@@ -52,9 +52,22 @@ public class UserServiceStub implements UserService {
 	}
 
 	@Override
-	public Result deleteTopic(String requestedUsername, String topic) {
-		// TODO Auto-generated method stub
-		return null;
+	public Result deleteTopic(String requestedUsername, String topicName) {
+		User user = users.get(requestedUsername);
+		if (user == null) {
+			return new Result(false, "Can't delete topic from non-existing user");
+		} else {
+			List<Topic> topics = user.getTopics();
+			Topic topic = new Topic(topicName);
+			if (!topics.contains(topic)) {
+				return new Result(false, "Topic doesn't exists");
+			} else {
+				topics.remove(topic);
+				User newUser = new User(user.getName(), topics, user.getRoles());
+				users.put(requestedUsername, newUser);
+				return new Result(true, "Topic delete");
+			}
+		}
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class TestServerApi {
 	@Before
 	public void init() {
 		adminUser = new User("adam", Collections.<Topic>emptyList(), Arrays.asList(Role.ADMIN, Role.REGULAR));
-		regularUser = new User("adam", Collections.<Topic>emptyList(), Arrays.asList(Role.REGULAR));
+		regularUser = new User("roy", Collections.<Topic>emptyList(), Arrays.asList(Role.REGULAR));
 		userService = new UserServiceStub(getTestUsers());
 		authenticator = new SimpleAuthenticator(new SimpleActivityService(), userService);
 		api = new ServerApi(authenticator, userService);
