@@ -1,5 +1,6 @@
 package server;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -50,33 +51,33 @@ public class TestServerApi {
 		assertTrue(api.add(adminUser.getName(), adminUser.getName(), "topic").isStatus());
 		assertTrue(api.add(regularUser.getName(), regularUser.getName(), "topic").isStatus());
 	}
-	
+
 	@Test
 	public void testAddToOther() {
 		assertTrue(api.add(adminUser.getName(), regularUser.getName(), "topic").isStatus());
 		assertFalse(api.add(regularUser.getName(), adminUser.getName(), "topic").isStatus());
 	}
-	
+
 	@Test
 	public void testAddAlreadyExisting() {
 		assertTrue(api.add(adminUser.getName(), regularUser.getName(), "topic").isStatus());
 		assertFalse(api.add(adminUser.getName(), regularUser.getName(), "topic").isStatus());
 	}
-	
+
 	@Test
 	public void testDeleteFromSelf() {
 		testAddToSelf();
 		assertTrue(api.delete(adminUser.getName(), adminUser.getName(), "topic").isStatus());
 		assertTrue(api.delete(regularUser.getName(), regularUser.getName(), "topic").isStatus());
 	}
-	
+
 	@Test
 	public void testDeleteFromOther() {
 		testAddToSelf();
 		assertTrue(api.delete(adminUser.getName(), regularUser.getName(), "topic").isStatus());
 		assertFalse(api.delete(regularUser.getName(), adminUser.getName(), "topic").isStatus());
 	}
-	
+
 	@Test
 	public void testDeleteNonExisting() {
 		assertFalse(api.delete(adminUser.getName(), adminUser.getName(), "topic").isStatus());
@@ -84,15 +85,41 @@ public class TestServerApi {
 		assertFalse(api.delete(adminUser.getName(), adminUser.getName(), "topic").isStatus());
 		assertFalse(api.delete(regularUser.getName(), regularUser.getName(), "topic").isStatus());
 	}
-	
+
 	@Test
 	public void testDeleteAfterDelete() {
 		testDeleteFromSelf();
-		testDeleteNonExisting();		
+		testDeleteNonExisting();
+	}
+
+	@Test
+	public void testEdit() {
+		testAddToSelf();
+		assertTrue(api.edit(adminUser.getName(), adminUser.getName(), "topic", "topic2").isStatus());
+		assertTrue(api.edit(regularUser.getName(), regularUser.getName(), "topic", "topic2").isStatus());
+		assertTrue(api.edit(adminUser.getName(), regularUser.getName(), "topic2", "topic3").isStatus());
+		assertFalse(api.edit(regularUser.getName(), adminUser.getName(), "topic2", "topic3").isStatus());
+		assertFalse(api.edit(adminUser.getName(), adminUser.getName(), "topic", "topic3").isStatus());
+		assertFalse(api.edit(adminUser.getName(), adminUser.getName(), "non-existing", "topic3").isStatus());
+	}
+
+	@Test
+	public void testView() {
+		api.add(adminUser.getName(), adminUser.getName(), "topic");
+		api.add(regularUser.getName(), regularUser.getName(), "topic2");
+		assertEquals(getExpected("topic"), api.view(adminUser.getName(), adminUser.getName()));
+		assertEquals(getExpected("topic2"), api.view(regularUser.getName(), regularUser.getName()));
+		assertEquals(getExpected("topic2"), api.view(adminUser.getName(), regularUser.getName()));
+		assertEquals(getExpectedFailure(), api.view(regularUser.getName(), adminUser.getName()));
+
+	}
+
+	private Result getExpected(String string) {
+		return new Result(true, new HashSet<>(Collections.singleton(new Topic(string))).toString());
 	}
 	
-	
-	
-	
+	private Result getExpectedFailure() {
+		return new Result(false, ServerApi.AUTHENTICATION_FAILURE);
+	}
 
 }

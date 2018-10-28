@@ -5,7 +5,7 @@ import users.UserService;
 
 public class ServerApi {
 
-	private static final String AUTHENTICATION_FAILURE = "Authentication failed";
+	public static final String AUTHENTICATION_FAILURE = "Authentication failed";
 	private final Authenticator authenticator;
 	private UserService userService;
 

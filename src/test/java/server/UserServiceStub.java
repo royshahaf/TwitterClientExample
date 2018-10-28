@@ -92,8 +92,13 @@ public class UserServiceStub implements UserService {
 
 	@Override
 	public Result getTopics(String requestedUsername) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = users.get(requestedUsername);
+		if (user == null) {
+			return new Result(false, "Can't get topics from non-existing user");
+		} else {
+			Set<Topic> topics = user.getTopics();
+			return new Result(true, topics.toString());
+		}
 	}
 
 }
