@@ -2,8 +2,8 @@ package server;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import roles.Role;
 import users.Topic;
@@ -19,9 +19,9 @@ public class UserServiceStub implements UserService {
 	}
 
 	@Override
-	public List<Role> getRoles(String id) {
+	public Set<Role> getRoles(String id) {
 		if (users.get(id) == null) {
-			return Collections.emptyList();
+			return Collections.emptySet();
 		} else {
 			return users.get(id).getRoles();
 		}
@@ -38,7 +38,7 @@ public class UserServiceStub implements UserService {
 		if (user == null) {
 			return new Result(false, "Can't add topic to non-existing user");
 		} else {
-			List<Topic> topics = user.getTopics();
+			Set<Topic> topics = user.getTopics();
 			Topic topic = new Topic(topicName);
 			if (topics.contains(topic)) {
 				return new Result(false, "Topic already exists");
@@ -57,7 +57,7 @@ public class UserServiceStub implements UserService {
 		if (user == null) {
 			return new Result(false, "Can't delete topic from non-existing user");
 		} else {
-			List<Topic> topics = user.getTopics();
+			Set<Topic> topics = user.getTopics();
 			Topic topic = new Topic(topicName);
 			if (!topics.contains(topic)) {
 				return new Result(false, "Topic doesn't exists");
@@ -72,8 +72,22 @@ public class UserServiceStub implements UserService {
 
 	@Override
 	public Result editTopics(String requestedUsername, String previousTopic, String newTopic) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = users.get(requestedUsername);
+		if (user == null) {
+			return new Result(false, "Can't edit topic for non-existing user");
+		} else {
+			Set<Topic> topics = user.getTopics();
+			Topic topic = new Topic(previousTopic);
+			if (!topics.contains(topic)) {
+				return new Result(false, "Topic to edit doesn't exists");
+			} else {
+				topics.remove(topic);
+				topics.add(new Topic(newTopic));
+				User newUser = new User(user.getName(), topics, user.getRoles());
+				users.put(requestedUsername, newUser);
+				return new Result(true, "Topic delete");
+			}
+		}
 	}
 
 	@Override

@@ -1,16 +1,16 @@
 package users;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import roles.Role;
 
 public class User {
 	private final String name;
-	private final List<Topic> topics;
-	private final List<Role> roles;
+	private final Set<Topic> topics;
+	private final Set<Role> roles;
 	
-	public User(String name, List<Topic> topics, List<Role> roles) {
+	public User(String name, Set<Topic> topics, Set<Role> roles) {
 		super();
 		this.name = name;
 		this.topics = topics;
@@ -21,12 +21,12 @@ public class User {
 		return name;
 	}
 
-	public List<Topic> getTopics() {
-		return new ArrayList<>(topics);
+	public Set<Topic> getTopics() {
+		return new HashSet<>(topics);
 	}
 
-	public List<Role> getRoles() {
-		return new ArrayList<>(roles);
+	public Set<Role> getRoles() {
+		return new HashSet<>(roles);
 	}
 	
 	

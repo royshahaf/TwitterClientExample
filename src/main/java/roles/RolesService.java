@@ -1,7 +1,7 @@
 package roles;
 
-import java.util.List;
+import java.util.Set;
 
 public interface RolesService {
-	public List<Role> getRoles(String id);
+	public Set<Role> getRoles(String id);
 }

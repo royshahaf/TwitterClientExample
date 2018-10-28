@@ -2,15 +2,16 @@ package authentication;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import roles.Role;
 import roles.RolesService;
 
 public class RolesFetcherStub implements RolesService {
 
-	Map<String, List<Role>> roles;
+	Map<String, Set<Role>> roles;
 
 	public RolesFetcherStub() {
 		populateTestMap();
@@ -18,14 +19,14 @@ public class RolesFetcherStub implements RolesService {
 
 	private void populateTestMap() {
 		roles = new HashMap<>();
-		roles.put("both", Arrays.asList(new Role[] { Role.ADMIN, Role.REGULAR }));
-		roles.put("regularOnly", Arrays.asList(new Role[] { Role.REGULAR }));
-		roles.put("adminOnly", Arrays.asList(new Role[] { Role.ADMIN }));
-		roles.put("empty", Arrays.asList(new Role[] {}));
+		roles.put("both", new HashSet<>(Arrays.asList(new Role[] { Role.ADMIN, Role.REGULAR })));
+		roles.put("regularOnly", new HashSet<>(Arrays.asList(new Role[] { Role.REGULAR })));
+		roles.put("adminOnly", new HashSet<>(Arrays.asList(new Role[] { Role.ADMIN })));
+		roles.put("empty", new HashSet<>(Arrays.asList(new Role[] {})));
 	}
 
 	@Override
-	public List<Role> getRoles(String id) {
+	public Set<Role> getRoles(String id) {
 		return roles.get(id);
 	}
 

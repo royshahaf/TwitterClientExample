@@ -1,15 +1,15 @@
 package activities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import roles.Role;
 
 public class Activity {
 	private final String name;
-	private final List<Role> roles;
+	private final Set<Role> roles;
 
-	public Activity(String name, List<Role> roles) {
+	public Activity(String name, Set<Role> roles) {
 		super();
 		this.name = name;
 		this.roles = roles;
@@ -19,8 +19,8 @@ public class Activity {
 		return name;
 	}
 
-	public List<Role> getRoles() {
-		return new ArrayList<>(roles);
+	public Set<Role> getRoles() {
+		return new HashSet<>(roles);
 	}
 
 	@Override
