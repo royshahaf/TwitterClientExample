@@ -12,13 +12,9 @@ Regular users:
 
 Administrators
 
-1. Have the same abilities as regular users
+1. Have the same abilities as regular users.
 
 2. Can administer topics for other users (view, add, edit and delete).
-
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
 ## Built With
 
