@@ -46,10 +46,7 @@ public class Result {
 		} else if (!message.equals(other.message)) {
 			return false;
 		}
-		if (status != other.status) {
-			return false;
-		}
-		return true;
+		return status == other.status;
 	}
 
 	@Override
