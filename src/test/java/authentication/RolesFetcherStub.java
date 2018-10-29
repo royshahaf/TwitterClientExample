@@ -9,7 +9,6 @@ import java.util.Set;
 import activities.Activity;
 import activities.ActivityService;
 import roles.Role;
-import roles.RolesService;
 import server.Result;
 import users.User;
 import users.UserService;

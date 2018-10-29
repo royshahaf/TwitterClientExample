@@ -6,18 +6,13 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import roles.Role;
 import server.Result;
-import users.Topic;
-import users.User;
-import users.UserService;
 
 public abstract class TestAbstractUserService {
 
