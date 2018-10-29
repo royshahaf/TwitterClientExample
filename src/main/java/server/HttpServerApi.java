@@ -3,6 +3,7 @@ package server;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.path;
+import static spark.Spark.port;
 import static spark.Spark.post;
 import static spark.Spark.put;
 import static spark.Spark.stop;
@@ -14,12 +15,14 @@ import spark.Response;
 
 public class HttpServerApi {
 
+	public static final int PORT = 8111;
 	private static final String REQUESTING = ":requesting";
 	private static final String REQUESTED = ":requested";
 
 	public static void main(String[] args) {
 		Injector injector = Guice.createInjector(new MyModule());
 		ServerApi api = injector.getInstance(ServerApi.class);
+		port(PORT);
 		path("/topics", () -> {
 			get("/view/:requesting/:requested", (request, response) -> {
 				Result result = api.view(request.params(REQUESTING), request.params(REQUESTED));
