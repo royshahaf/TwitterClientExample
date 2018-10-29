@@ -12,6 +12,13 @@ Regular users:
 
 Administrators
 
-1. Have the same abilities as regular users
+1. Have the same abilities as regular users.
 
 2. Can administer topics for other users (view, add, edit and delete).
+
+## Built With
+
+* [Twitter4j](http://twitter4j.org/en/) - A twitter api for java
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [Spark Java](http://sparkjava.com/) - A lightweight http framework for java
+
