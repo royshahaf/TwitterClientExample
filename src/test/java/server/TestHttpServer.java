@@ -65,6 +65,8 @@ public class TestHttpServer {
 			set.remove(new Topic("topic1"));
 			set.add(new Topic("topic3"));
 			assertEquals(set.toString(), viewed.getContentAsString());
+			viewed = httpClient.GET("http://0.0.0.0:" + HttpServerApi.PORT + "/topics/view/adam/null");
+			assertEquals(500, viewed.getStatus());
 		} finally {
 			HttpServerApi.stopSpark();
 			httpClient.stop();
