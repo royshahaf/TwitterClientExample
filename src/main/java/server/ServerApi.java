@@ -1,5 +1,7 @@
 package server;
 
+import com.google.inject.Inject;
+
 import authentication.Authenticator;
 import users.UserService;
 
@@ -9,6 +11,7 @@ public class ServerApi {
 	private final Authenticator authenticator;
 	private UserService userService;
 
+	@Inject
 	public ServerApi(Authenticator authenticator, UserService userService) {
 		this.authenticator = authenticator;
 		this.userService = userService;

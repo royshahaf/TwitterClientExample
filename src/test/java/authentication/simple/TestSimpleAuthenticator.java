@@ -7,15 +7,18 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import activities.ActivityService;
 import authentication.RolesFetcherStub;
 import roles.Role;
 import roles.RolesService;
+import users.UserService;
 
 public class TestSimpleAuthenticator {
 
 	private static final RolesService rolesFetcher = new RolesFetcherStub();
 
-	private static final SimpleAuthenticator authenticator = new SimpleAuthenticator(rolesFetcher, rolesFetcher);
+	private static final SimpleAuthenticator authenticator = new SimpleAuthenticator((ActivityService) rolesFetcher,
+			(UserService) rolesFetcher);
 
 	String[] ids = new String[] { "both", "adminOnly", "regularOnly", "empty", "null" };
 
@@ -30,9 +33,9 @@ public class TestSimpleAuthenticator {
 					if (requestingRoles == null || activityRoles == null) {
 						expected = false;
 					} else if (ids[k].equals(ids[j])) {
-						expected =  !Collections.disjoint(activityRoles, requestingRoles);
+						expected = !Collections.disjoint(activityRoles, requestingRoles);
 					} else {
-						expected =  requestingRoles.contains(Role.ADMIN);
+						expected = requestingRoles.contains(Role.ADMIN);
 					}
 					assertEquals(expected, authenticator.authenticate(ids[i], ids[j], ids[k]));
 				}

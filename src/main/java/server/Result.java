@@ -51,5 +51,10 @@ public class Result {
 		}
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Result [status=" + status + ", message=" + message + "]";
+	}
 	
 }

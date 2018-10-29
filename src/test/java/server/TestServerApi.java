@@ -20,6 +20,7 @@ import roles.Role;
 import users.Topic;
 import users.User;
 import users.UserService;
+import users.simple.SimpleUserService;
 
 public class TestServerApi {
 
@@ -34,7 +35,7 @@ public class TestServerApi {
 		adminUser = new User("adam", Collections.<Topic>emptySet(),
 				new HashSet<>(Arrays.asList(Role.ADMIN, Role.REGULAR)));
 		regularUser = new User("roy", Collections.<Topic>emptySet(), new HashSet<>(Arrays.asList(Role.REGULAR)));
-		userService = new UserServiceStub(getTestUsers());
+		userService = new SimpleUserService(getTestUsers());
 		authenticator = new SimpleAuthenticator(new SimpleActivityService(), userService);
 		api = new ServerApi(authenticator, userService);
 	}
@@ -111,7 +112,8 @@ public class TestServerApi {
 		assertEquals(getExpected("topic2"), api.view(regularUser.getName(), regularUser.getName()));
 		assertEquals(getExpected("topic2"), api.view(adminUser.getName(), regularUser.getName()));
 		assertEquals(getExpectedFailure(), api.view(regularUser.getName(), adminUser.getName()));
-
+		assertFalse(api.view("non-existing", "non-existing").isStatus());
+		assertFalse(api.view(adminUser.getName(), "non-existing").isStatus());
 	}
 
 	private Result getExpected(String string) {

@@ -3,16 +3,21 @@ package authentication.simple;
 import java.util.Collections;
 import java.util.Set;
 
+import com.google.inject.Inject;
+
+import activities.ActivityService;
 import authentication.Authenticator;
 import roles.Role;
 import roles.RolesService;
+import users.UserService;
 
 public class SimpleAuthenticator implements Authenticator {
 
 	private final RolesService actvitiyRolesFetcher;
 	private final RolesService userRolesFetcher;
 
-	public SimpleAuthenticator(RolesService activityRolesFetcher, RolesService userRolesFetcher) {
+	@Inject
+	public SimpleAuthenticator(ActivityService activityRolesFetcher, UserService userRolesFetcher) {
 		this.actvitiyRolesFetcher = activityRolesFetcher;
 		this.userRolesFetcher = userRolesFetcher;
 	}

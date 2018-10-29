@@ -1,20 +1,24 @@
-package server;
+package users.simple;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.inject.Inject;
+
 import roles.Role;
+import server.Result;
 import users.Topic;
 import users.User;
 import users.UserService;
 
-public class UserServiceStub implements UserService {
+public class SimpleUserService implements UserService {
 
 	Map<String, User> users;
-
-	public UserServiceStub(Map<String, User> testUsers) {
+	
+	@Inject
+	public SimpleUserService(Map<String, User> testUsers) {
 		users = new HashMap<>(testUsers);
 	}
 
