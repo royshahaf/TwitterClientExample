@@ -13,9 +13,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import access.AccessChecker;
+import access.simple.SimpleAccessChecker;
 import activities.simple.SimpleActivityService;
-import authentication.Authenticator;
-import authentication.simple.SimpleAuthenticator;
 import roles.Role;
 import users.Topic;
 import users.User;
@@ -25,7 +25,7 @@ import users.simple.SimpleUserService;
 public class TestServerApi {
 
 	private UserService userService;
-	private Authenticator authenticator;
+	private AccessChecker accessChecker;
 	private ServerApi api;
 	private User adminUser;
 	private User regularUser;
@@ -36,8 +36,8 @@ public class TestServerApi {
 				new HashSet<>(Arrays.asList(Role.ADMIN, Role.REGULAR)));
 		regularUser = new User("roy", Collections.<Topic>emptySet(), new HashSet<>(Arrays.asList(Role.REGULAR)));
 		userService = new SimpleUserService(getTestUsers());
-		authenticator = new SimpleAuthenticator(new SimpleActivityService(), userService);
-		api = new ServerApi(authenticator, userService);
+		accessChecker = new SimpleAccessChecker(new SimpleActivityService(), userService);
+		api = new ServerApi(accessChecker, userService);
 	}
 
 	private Map<String, User> getTestUsers() {
@@ -121,7 +121,7 @@ public class TestServerApi {
 	}
 	
 	private Result getExpectedFailure() {
-		return new Result(false, ServerApi.AUTHENTICATION_FAILURE);
+		return new Result(false, ServerApi.ACCESS_DENIED);
 	}
 
 }

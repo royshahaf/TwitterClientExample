@@ -5,6 +5,7 @@ import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.post;
 import static spark.Spark.put;
+import static spark.Spark.stop;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -34,12 +35,16 @@ public class HttpServerApi {
 						request.params(":topic"));
 				return handleResult(response, result);
 			});
-			post("/add/:requesting/:requested/:previousTopic/:newTopic", (request, response) -> {
+			post("/edit/:requesting/:requested/:previousTopic/:newTopic", (request, response) -> {
 				Result result = api.edit(request.params(REQUESTING), request.params(REQUESTED),
 						request.params(":previousTopic"), request.params(":newTopic"));
 				return handleResult(response, result);
 			});
 		});
+	}
+	
+	public static void stopSpark() {
+		stop();
 	}
 
 	private static Object handleResult(Response response, Result result) {

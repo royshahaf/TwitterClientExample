@@ -1,4 +1,4 @@
-package authentication.simple;
+package access.simple;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,17 +7,18 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import access.RolesFetcherStub;
+import access.simple.SimpleAccessChecker;
 import activities.ActivityService;
-import authentication.RolesFetcherStub;
 import roles.Role;
 import roles.RolesService;
 import users.UserService;
 
-public class TestSimpleAuthenticator {
+public class TestSimpleAccessChecker {
 
 	private static final RolesService rolesFetcher = new RolesFetcherStub();
 
-	private static final SimpleAuthenticator authenticator = new SimpleAuthenticator((ActivityService) rolesFetcher,
+	private static final SimpleAccessChecker accessChecker = new SimpleAccessChecker((ActivityService) rolesFetcher,
 			(UserService) rolesFetcher);
 
 	String[] ids = new String[] { "both", "adminOnly", "regularOnly", "empty", "null" };
@@ -37,7 +38,7 @@ public class TestSimpleAuthenticator {
 					} else {
 						expected = requestingRoles.contains(Role.ADMIN);
 					}
-					assertEquals(expected, authenticator.authenticate(ids[i], ids[j], ids[k]));
+					assertEquals(expected, accessChecker.checkAccess(ids[i], ids[j], ids[k]));
 				}
 			}
 		}

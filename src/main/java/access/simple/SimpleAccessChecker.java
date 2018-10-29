@@ -1,28 +1,28 @@
-package authentication.simple;
+package access.simple;
 
 import java.util.Collections;
 import java.util.Set;
 
 import com.google.inject.Inject;
 
+import access.AccessChecker;
 import activities.ActivityService;
-import authentication.Authenticator;
 import roles.Role;
 import roles.RolesService;
 import users.UserService;
 
-public class SimpleAuthenticator implements Authenticator {
+public class SimpleAccessChecker implements AccessChecker {
 
 	private final RolesService actvitiyRolesFetcher;
 	private final RolesService userRolesFetcher;
 
 	@Inject
-	public SimpleAuthenticator(ActivityService activityRolesFetcher, UserService userRolesFetcher) {
+	public SimpleAccessChecker(ActivityService activityRolesFetcher, UserService userRolesFetcher) {
 		this.actvitiyRolesFetcher = activityRolesFetcher;
 		this.userRolesFetcher = userRolesFetcher;
 	}
 
-	public boolean authenticate(String activityName, String requestingUsername, String requestedUsername) {
+	public boolean checkAccess(String activityName, String requestingUsername, String requestedUsername) {
 		Set<Role> activityRoles = actvitiyRolesFetcher.getRoles(activityName);
 		Set<Role> requestingRoles = userRolesFetcher.getRoles(requestingUsername);
 		if (requestingRoles == null || activityRoles == null) {

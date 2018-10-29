@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 
+import org.eclipse.jetty.client.HttpClient;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,13 +28,19 @@ public abstract class TestAbstractUserService {
 		regularUser = new User("roy", Collections.<Topic>emptySet(), new HashSet<>(Arrays.asList(Role.REGULAR)));
 		userService = getUserService();
 	}
-	
+
 	protected abstract UserService getUserService();
 
 	@Test
 	public void testAddToSelf() {
+		assertFalse(userService.addTopic("non-existing", "topic").isStatus());
 		assertTrue(userService.addTopic(adminUser.getName(), "topic").isStatus());
 		assertTrue(userService.addTopic(regularUser.getName(), "topic").isStatus());
+	}
+
+	@Test
+	public void testGetUser() {
+		assertEquals(adminUser, userService.getUser(adminUser.getName()));
 	}
 
 	@Test
@@ -45,6 +52,7 @@ public abstract class TestAbstractUserService {
 	@Test
 	public void testDeleteFromSelf() {
 		testAddToSelf();
+		assertFalse(userService.deleteTopic("non-existing", "topic").isStatus());
 		assertTrue(userService.deleteTopic(adminUser.getName(), "topic").isStatus());
 		assertTrue(userService.deleteTopic(regularUser.getName(), "topic").isStatus());
 	}
@@ -64,6 +72,7 @@ public abstract class TestAbstractUserService {
 	@Test
 	public void testEdit() {
 		testAddToSelf();
+		assertFalse(userService.editTopics("non-existing", "topic", "topic2").isStatus());
 		assertTrue(userService.editTopics(adminUser.getName(), "topic", "topic2").isStatus());
 		assertTrue(userService.editTopics(regularUser.getName(), "topic", "topic2").isStatus());
 		assertFalse(userService.editTopics(adminUser.getName(), "topic", "topic3").isStatus());

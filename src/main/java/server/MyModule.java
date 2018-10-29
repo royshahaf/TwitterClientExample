@@ -9,10 +9,10 @@ import java.util.Map;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
+import access.AccessChecker;
+import access.simple.SimpleAccessChecker;
 import activities.ActivityService;
 import activities.simple.SimpleActivityService;
-import authentication.Authenticator;
-import authentication.simple.SimpleAuthenticator;
 import roles.Role;
 import users.Topic;
 import users.User;
@@ -28,7 +28,7 @@ public class MyModule extends AbstractModule {
 
 		@Override
 		protected void configure() {
-			bind(Authenticator.class).to(SimpleAuthenticator.class).in(Scopes.SINGLETON);
+			bind(AccessChecker.class).to(SimpleAccessChecker.class).in(Scopes.SINGLETON);
 			bind(ActivityService.class).to(SimpleActivityService.class).in(Scopes.SINGLETON);
 			bind(UserService.class).toInstance(getUserService());
 		}

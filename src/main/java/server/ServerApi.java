@@ -2,50 +2,50 @@ package server;
 
 import com.google.inject.Inject;
 
-import authentication.Authenticator;
+import access.AccessChecker;
 import users.UserService;
 
 public class ServerApi {
 
-	public static final String AUTHENTICATION_FAILURE = "Authentication failed";
-	private final Authenticator authenticator;
+	public static final String ACCESS_DENIED = "Access denied";
+	private final AccessChecker accessChecker;
 	private UserService userService;
 
 	@Inject
-	public ServerApi(Authenticator authenticator, UserService userService) {
-		this.authenticator = authenticator;
+	public ServerApi(AccessChecker accessChecker, UserService userService) {
+		this.accessChecker = accessChecker;
 		this.userService = userService;
 	}
 
 	public Result add(String requestingUsername, String requestedUsername, String topic) {
-		if (authenticator.authenticate("add", requestingUsername, requestedUsername)) {
+		if (accessChecker.checkAccess("add", requestingUsername, requestedUsername)) {
 			return userService.addTopic(requestedUsername, topic);
 		} else {
-			return new Result(false, AUTHENTICATION_FAILURE);
+			return new Result(false, ACCESS_DENIED);
 		}
 	}
 
 	public Result delete(String requestingUsername, String requestedUsername, String topic) {
-		if (authenticator.authenticate("remove", requestingUsername, requestedUsername)) {
+		if (accessChecker.checkAccess("remove", requestingUsername, requestedUsername)) {
 			return userService.deleteTopic(requestedUsername, topic);
 		} else {
-			return new Result(false, AUTHENTICATION_FAILURE);
+			return new Result(false, ACCESS_DENIED);
 		}
 	}
 
 	public Result edit(String requestingUsername, String requestedUsername, String previousTopic, String newTopic) {
-		if (authenticator.authenticate("edit", requestingUsername, requestedUsername)) {
+		if (accessChecker.checkAccess("edit", requestingUsername, requestedUsername)) {
 			return userService.editTopics(requestedUsername, previousTopic, newTopic);
 		} else {
-			return new Result(false, AUTHENTICATION_FAILURE);
+			return new Result(false, ACCESS_DENIED);
 		}
 	}
 
 	public Result view(String requestingUsername, String requestedUsername) {
-		if (authenticator.authenticate("view", requestingUsername, requestedUsername)) {
+		if (accessChecker.checkAccess("view", requestingUsername, requestedUsername)) {
 			return userService.getTopics(requestedUsername);
 		} else {
-			return new Result(false, AUTHENTICATION_FAILURE);
+			return new Result(false, ACCESS_DENIED);
 		}
 	}
 }
