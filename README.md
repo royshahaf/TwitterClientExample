@@ -21,4 +21,4 @@ Administrators
 * [Twitter4j](http://twitter4j.org/en/) - A twitter api for java
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Spark Java](http://sparkjava.com/) - A lightweight http framework for java
-
+* [Guice](https://github.com/google/guice) - Dependency Injection
