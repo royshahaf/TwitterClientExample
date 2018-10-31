@@ -18,18 +18,27 @@ import users.User;
 
 public class HttpServerApi {
 
-	public int port = 8111;
+	private int port = 8111;
 	private static final String REQUESTING = ":requesting";
 	private static final String REQUESTED = ":requested";
+
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
 
 	public void start(Map<String, User> users, SecurityParams params) {
 		Injector injector = Guice.createInjector(new MyModule(users));
 		ServerApi api = injector.getInstance(ServerApi.class);
-		if (params.secure) {
-			secure(params.keystoreFilePath, params.keystorePassword, params.truststoreFilePath, params.truststorePassword);
+		if (params.isSecure()) {
+			secure(params.getKeystoreFilePath(), params.getKeystorePassword(), params.getTruststoreFilePath(),
+					params.getTruststorePassword());
 		}
 		port(port);
-		
+
 		path("/topics", () -> {
 			get("/view/:requesting/:requested", (request, response) -> {
 				Result result = api.view(request.params(REQUESTING), request.params(REQUESTED));
@@ -52,7 +61,7 @@ public class HttpServerApi {
 			});
 		});
 	}
-	
+
 	public void stopSpark() {
 		stop();
 	}

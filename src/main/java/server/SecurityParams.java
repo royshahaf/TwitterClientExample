@@ -1,11 +1,51 @@
 package server;
 
 public class SecurityParams {
-	public boolean secure;
-	public String keystoreFilePath;
-	public String keystorePassword;
-	public String truststoreFilePath;
-	public String truststorePassword;
+	private boolean secure;
+	private String keystoreFilePath;
+	private String keystorePassword;
+	private String truststoreFilePath;
+	private String truststorePassword;
+
+	public boolean isSecure() {
+		return secure;
+	}
+
+	public void setSecure(boolean secure) {
+		this.secure = secure;
+	}
+
+	public String getKeystoreFilePath() {
+		return keystoreFilePath;
+	}
+
+	public void setKeystoreFilePath(String keystoreFilePath) {
+		this.keystoreFilePath = keystoreFilePath;
+	}
+
+	public String getKeystorePassword() {
+		return keystorePassword;
+	}
+
+	public void setKeystorePassword(String keystorePassword) {
+		this.keystorePassword = keystorePassword;
+	}
+
+	public String getTruststoreFilePath() {
+		return truststoreFilePath;
+	}
+
+	public void setTruststoreFilePath(String truststoreFilePath) {
+		this.truststoreFilePath = truststoreFilePath;
+	}
+
+	public String getTruststorePassword() {
+		return truststorePassword;
+	}
+
+	public void setTruststorePassword(String truststorePassword) {
+		this.truststorePassword = truststorePassword;
+	}
 
 	public static SecurityParams getSecurityParams(String prefix) {
 		SecurityParams params = new SecurityParams();

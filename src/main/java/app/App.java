@@ -13,7 +13,7 @@ public class App {
 		int port = getPort();
 		SecurityParams params = SecurityParams.getSecurityParams(PREFIX);
 		MongoParams mongoParams = MongoParams.getMongoParams(PREFIX);
-		api.port = port;
+		api.setPort(port);
 		api.start(new MongoMap(mongoParams), params);
 	}
 

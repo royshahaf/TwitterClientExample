@@ -1,13 +1,11 @@
 package server;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -15,10 +13,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.api.ContentResponse;
-import org.eclipse.jetty.client.api.Request;
-import org.eclipse.jetty.http.HttpFields;
 import org.eclipse.jetty.http.HttpMethod;
-import org.eclipse.jetty.http.HttpVersion;
 import org.junit.Test;
 
 import roles.Role;
@@ -48,35 +43,35 @@ public class TestHttpServer {
 			httpServer.start(getTestUsers(), getParams());
 			Spark.awaitInitialization();
 			Set<Topic> set = new HashSet<>();
-			ContentResponse viewed = safelyView(httpClient, httpServer.port);
+			ContentResponse viewed = safelyView(httpClient, httpServer.getPort());
 			assertEquals(200, viewed.getStatus());
 			assertEquals(set.toString(), viewed.getContentAsString());
-			httpClient.newRequest("http://0.0.0.0:" + httpServer.port + "/topics/add/adam/adam/topic1")
+			httpClient.newRequest("http://0.0.0.0:" + httpServer.getPort() + "/topics/add/adam/adam/topic1")
 					.method(HttpMethod.PUT).send();
-			viewed = safelyView(httpClient, httpServer.port);
+			viewed = safelyView(httpClient, httpServer.getPort());
 			assertEquals(200, viewed.getStatus());
 			set.add(new Topic("topic1"));
 			assertEquals(set.toString(), viewed.getContentAsString());
-			httpClient.newRequest("http://0.0.0.0:" + httpServer.port + "/topics/add/adam/adam/topic2")
+			httpClient.newRequest("http://0.0.0.0:" + httpServer.getPort() + "/topics/add/adam/adam/topic2")
 					.method(HttpMethod.PUT).send();
-			viewed = safelyView(httpClient, httpServer.port);
+			viewed = safelyView(httpClient, httpServer.getPort());
 			assertEquals(200, viewed.getStatus());
 			set.add(new Topic("topic2"));
 			assertEquals(set.toString(), viewed.getContentAsString());
-			httpClient.newRequest("http://0.0.0.0:" + httpServer.port + "/topics/delete/adam/adam/topic2")
+			httpClient.newRequest("http://0.0.0.0:" + httpServer.getPort() + "/topics/delete/adam/adam/topic2")
 					.method(HttpMethod.DELETE).send();
-			viewed = safelyView(httpClient, httpServer.port);
+			viewed = safelyView(httpClient, httpServer.getPort());
 			assertEquals(200, viewed.getStatus());
 			set.remove(new Topic("topic2"));
 			assertEquals(set.toString(), viewed.getContentAsString());
-			httpClient.newRequest("http://0.0.0.0:" + httpServer.port + "/topics/edit/adam/adam/topic1/topic3")
+			httpClient.newRequest("http://0.0.0.0:" + httpServer.getPort() + "/topics/edit/adam/adam/topic1/topic3")
 					.method(HttpMethod.POST).send();
-			viewed = safelyView(httpClient, httpServer.port);
+			viewed = safelyView(httpClient, httpServer.getPort());
 			assertEquals(200, viewed.getStatus());
 			set.remove(new Topic("topic1"));
 			set.add(new Topic("topic3"));
 			assertEquals(set.toString(), viewed.getContentAsString());
-			viewed = httpClient.GET("http://0.0.0.0:" + httpServer.port + "/topics/view/adam/null");
+			viewed = httpClient.GET("http://0.0.0.0:" + httpServer.getPort() + "/topics/view/adam/null");
 			assertEquals(500, viewed.getStatus());
 		} finally {
 			httpServer.stopSpark();
@@ -90,7 +85,7 @@ public class TestHttpServer {
 
 	private SecurityParams getParams() {
 		SecurityParams params = new SecurityParams();
-		params.secure = false;
+		params.setSecure(false);
 		return params;
 	}
 
