@@ -8,21 +8,25 @@ import static spark.Spark.post;
 import static spark.Spark.put;
 import static spark.Spark.stop;
 
+import java.util.Map;
+
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import spark.Response;
+import users.User;
 
 public class HttpServerApi {
 
-	public static final int PORT = 8111;
+	public int PORT = 8111;
 	private static final String REQUESTING = ":requesting";
 	private static final String REQUESTED = ":requested";
 
-	public static void main(String[] args) {
-		Injector injector = Guice.createInjector(new MyModule());
+	public void start(Map<String, User> users) {
+		Injector injector = Guice.createInjector(new MyModule(users));
 		ServerApi api = injector.getInstance(ServerApi.class);
 		port(PORT);
+		
 		path("/topics", () -> {
 			get("/view/:requesting/:requested", (request, response) -> {
 				Result result = api.view(request.params(REQUESTING), request.params(REQUESTED));
@@ -46,11 +50,11 @@ public class HttpServerApi {
 		});
 	}
 	
-	public static void stopSpark() {
+	public void stopSpark() {
 		stop();
 	}
 
-	private static Object handleResult(Response response, Result result) {
+	private Object handleResult(Response response, Result result) {
 		response.type("application/json");
 		if (result.isStatus()) {
 			response.status(200);
