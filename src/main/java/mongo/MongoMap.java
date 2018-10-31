@@ -71,7 +71,7 @@ public class MongoMap implements Map<String, User> {
 	@Override
 	public boolean containsValue(Object arg0) {
 		if (arg0.getClass() == User.class) {
-			return collection.find(eq("name", ((User) arg0).getName().toString())).first().equals(arg0);
+			return collection.find(eq("name", ((User) arg0).getName())).first().equals(arg0);
 		} else {
 			return false;
 		}
@@ -79,7 +79,7 @@ public class MongoMap implements Map<String, User> {
 
 	@Override
 	public Set<Entry<String, User>> entrySet() {
-		return null;
+		return new HashSet<>();
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class MongoMap implements Map<String, User> {
 
 	@Override
 	public Set<String> keySet() {
-		return values().stream().map(user -> user.getName()).collect(Collectors.toSet());
+		return values().stream().map(User::getName).collect(Collectors.toSet());
 	}
 
 	@Override
@@ -124,13 +124,17 @@ public class MongoMap implements Map<String, User> {
 	@Override
 	public Collection<User> values() {
 		Set<User> users = new HashSet<>();
-		collection.find().forEach(new Block<User>() {
+		collection.find().forEach(addUser(users));
+		return users;
+	}
+
+	private Block<User> addUser(Set<User> users) {
+		return new Block<User>() {
 			@Override
 			public void apply(final User user) {
 				users.add(user);
 			}
-		});
-		return users;
+		};
 	}
 
 	public void close() {
