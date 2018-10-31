@@ -46,6 +46,18 @@ public class MongoMap implements Map<String, User> {
 		collection = database.getCollection(collectionName, User.class).withCodecRegistry(pojoCodecRegistry);
 	}
 
+	public MongoMap(MongoParams mongoParams) {
+		if (mongoParams.connectionString != null) {
+			client = MongoClients.create(mongoParams.connectionString);
+		} else {
+			client = MongoClients.create();
+		}
+		pojoCodecRegistry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(),
+				fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+		database = client.getDatabase(mongoParams.databaseName);
+		collection = database.getCollection(mongoParams.collectionName, User.class).withCodecRegistry(pojoCodecRegistry);
+	}
+
 	@Override
 	public void clear() {
 		collection.drop();
