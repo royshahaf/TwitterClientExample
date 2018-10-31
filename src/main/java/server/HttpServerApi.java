@@ -1,6 +1,6 @@
 package server;
 
-import static spark.Spark.delete;
+import static spark.Spark.*;
 import static spark.Spark.get;
 import static spark.Spark.path;
 import static spark.Spark.port;
@@ -18,14 +18,17 @@ import users.User;
 
 public class HttpServerApi {
 
-	public int PORT = 8111;
+	public int port = 8111;
 	private static final String REQUESTING = ":requesting";
 	private static final String REQUESTED = ":requested";
 
-	public void start(Map<String, User> users) {
+	public void start(Map<String, User> users, SecurityParams params) {
 		Injector injector = Guice.createInjector(new MyModule(users));
 		ServerApi api = injector.getInstance(ServerApi.class);
-		port(PORT);
+		if (params.secure) {
+			secure(params.keystoreFilePath, params.keystorePassword, params.truststoreFilePath, params.truststorePassword);
+		}
+		port(port);
 		
 		path("/topics", () -> {
 			get("/view/:requesting/:requested", (request, response) -> {
