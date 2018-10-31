@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
@@ -101,7 +102,11 @@ public class MongoMap implements Map<String, User> {
 	@Override
 	public User put(String arg0, User arg1) {
 		User previous = get(arg0);
-		collection.insertOne(arg1);
+		if (previous == null) {
+			collection.insertOne(arg1);
+		} else {
+			collection.updateOne(eq("name", arg0), new Document("$set", arg1));
+		}
 		return previous;
 	}
 

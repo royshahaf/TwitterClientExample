@@ -1,11 +1,15 @@
 package users;
 
 public class Topic {
-	private final String name;
+	private String name;
 
-	public Topic(String name) {
+	public Topic() {
 		super();
-		this.name = name;
+	}
+	
+	public Topic(String name) {
+		this();
+		this.setName(name);
 	}
 
 	public String getName() {
@@ -16,7 +20,7 @@ public class Topic {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((getName() == null) ? 0 : getName().hashCode());
 		return result;
 	}
 
@@ -32,11 +36,11 @@ public class Topic {
 			return false;
 		}
 		Topic other = (Topic) obj;
-		if (name == null) {
-			if (other.name != null) {
+		if (getName() == null) {
+			if (other.getName() != null) {
 				return false;
 			}
-		} else if (!name.equals(other.name)) {
+		} else if (!getName().equals(other.getName())) {
 			return false;
 		}
 		return true;
@@ -44,7 +48,11 @@ public class Topic {
 
 	@Override
 	public String toString() {
-		return "Topic [name=" + name + "]";
+		return "Topic [name=" + getName() + "]";
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }
