@@ -7,35 +7,18 @@ import server.SecurityParams;
 
 public class App {
 	private static final String PREFIX = "twitter.example.";
+	private static final HttpServerApi api = new HttpServerApi();;
 
 	public static void main(String[] args) {
 		int port = getPort();
-		SecurityParams params = getSecurityParams();
-		MongoParams mongoParams = getMongoParams();
-		HttpServerApi api = new HttpServerApi();
+		SecurityParams params = SecurityParams.getSecurityParams(PREFIX);
+		MongoParams mongoParams = MongoParams.getMongoParams(PREFIX);
 		api.port = port;
 		api.start(new MongoMap(mongoParams), params);
 	}
 
-	private static MongoParams getMongoParams() {
-		MongoParams params = new MongoParams();
-		params.connectionString = System.getenv(PREFIX + "connectionString");
-		params.databaseName = System.getenv(PREFIX + "databaseName");
-		params.collectionName = System.getenv(PREFIX + "collectionName");
-		return params;
-	}
-
-	private static SecurityParams getSecurityParams() {
-		SecurityParams params = new SecurityParams();
-		String secureString = System.getenv(PREFIX + "secure");
-		params.secure = Boolean.parseBoolean(secureString);
-		if (params.secure) {
-			params.keystoreFilePath = System.getenv(PREFIX + "keystoreFilePath");
-			params.keystorePassword = System.getenv(PREFIX + "keystorePassword");
-			params.truststoreFilePath = System.getenv(PREFIX + "truststoreFilePath");
-			params.truststorePassword = System.getenv(PREFIX + "truststorePassword");
-		}
-		return params;
+	public static void stop() {
+		api.stopSpark();
 	}
 
 	private static int getPort() {

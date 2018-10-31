@@ -1,7 +1,6 @@
 package users.simple;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,10 +15,10 @@ import users.UserService;
 public class SimpleUserService implements UserService {
 
 	Map<String, User> users;
-	
+
 	@Inject
 	public SimpleUserService(Map<String, User> testUsers) {
-		users = new HashMap<>(testUsers);
+		users = testUsers;
 	}
 
 	@Override

@@ -133,4 +133,7 @@ public class MongoMap implements Map<String, User> {
 		return users;
 	}
 
+	public void close() {
+		client.close();
+	}
 }
