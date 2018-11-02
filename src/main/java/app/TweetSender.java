@@ -3,12 +3,12 @@ package app;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import kafka.KafkaSender;
 import mongo.MongoMap;
 import mongo.MongoParams;
 import twitter.StreamTweets;
 import twitter4j.Status;
 import users.Topic;
+import websocket.WebSocketSender;
 
 public class TweetSender {
 	private static final String PREFIX = "twitter.example.";
@@ -21,7 +21,7 @@ public class TweetSender {
 		}
 		MongoParams mongoParams = MongoParams.getMongoParams(PREFIX);
 		MongoMap mongoMap = new MongoMap(mongoParams);
-		Sender<Status> sender = new KafkaSender();
+		Sender<Status> sender = new WebSocketSender();
 		StreamTweets stream = new StreamTweets(sender);
 		for (int i = 0; repeats == 0 || i < repeats; i++) {
 			Set<String> topics = mongoMap.values().stream().map(user -> user.getTopics()).flatMap(set -> set.stream())

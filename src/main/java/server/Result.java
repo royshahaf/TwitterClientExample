@@ -2,27 +2,32 @@ package server;
 
 public class Result {
 	private final boolean status;
-	private final String message;
-	
-	public Result(boolean status, String message) {
+	private final Object payload;
+
+	public Result(boolean status, Object payload) {
 		super();
 		this.status = status;
-		this.message = message;
+		this.payload = payload;
 	}
 
 	public boolean isStatus() {
 		return status;
 	}
 
-	public String getMessage() {
-		return message;
+	public Object getMessage() {
+		return payload;
+	}
+
+	@Override
+	public String toString() {
+		return "Result [status=" + status + ", payload=" + payload + "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((message == null) ? 0 : message.hashCode());
+		result = prime * result + ((payload == null) ? 0 : payload.hashCode());
 		result = prime * result + (status ? 1231 : 1237);
 		return result;
 	}
@@ -39,19 +44,14 @@ public class Result {
 			return false;
 		}
 		Result other = (Result) obj;
-		if (message == null) {
-			if (other.message != null) {
+		if (payload == null) {
+			if (other.payload != null) {
 				return false;
 			}
-		} else if (!message.equals(other.message)) {
+		} else if (!payload.equals(other.payload)) {
 			return false;
 		}
 		return status == other.status;
 	}
 
-	@Override
-	public String toString() {
-		return "Result [status=" + status + ", message=" + message + "]";
-	}
-	
 }

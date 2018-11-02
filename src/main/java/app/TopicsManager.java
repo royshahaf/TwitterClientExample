@@ -22,7 +22,7 @@ public class TopicsManager {
 	}
 
 	private static int getPort() {
-		String portString = System.getenv(PREFIX + "port");
+		String portString = System.getenv(PREFIX + "topicsPort");
 		try {
 			return Integer.parseInt(portString);
 		} catch (NumberFormatException e) {

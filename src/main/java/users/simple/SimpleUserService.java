@@ -100,7 +100,7 @@ public class SimpleUserService implements UserService {
 			return new Result(false, "Can't get topics from non-existing user");
 		} else {
 			Set<Topic> topics = user.getTopics();
-			return new Result(true, topics.toString());
+			return new Result(true, topics);
 		}
 	}
 
