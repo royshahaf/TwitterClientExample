@@ -3,13 +3,9 @@ package app;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-
 import kafka.KafkaSender;
 import mongo.MongoMap;
 import mongo.MongoParams;
-import server.MyModule;
 import twitter.StreamTweets;
 import twitter4j.Status;
 import users.Topic;

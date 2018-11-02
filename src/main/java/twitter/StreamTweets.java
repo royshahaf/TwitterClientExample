@@ -44,8 +44,6 @@ public class StreamTweets {
 				}
 			});
 
-	private String[] topics;
-
 	private Sender<Status> sender;
 
 	public StreamTweets(Sender<Status> sender) {
@@ -53,7 +51,6 @@ public class StreamTweets {
 	}
 
 	public void filter(String... topics) {
-		this.topics = topics;
 		twitterStream.filter(topics);
 	}
 

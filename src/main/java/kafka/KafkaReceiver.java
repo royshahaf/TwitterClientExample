@@ -5,8 +5,13 @@ import java.util.Collections;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class KafkaReceiver {
+	
+	private static final Logger logger = LoggerFactory.getLogger(KafkaReceiver.class);
+	
 	public static Consumer<String, String> createConsumer() {
 		Consumer<String, String> consumer = new KafkaConsumer<>(KafkaProps.getKafkaConsumerProps());
 		consumer.subscribe(Collections.singletonList("unfiltered"));
@@ -24,10 +29,10 @@ public class KafkaReceiver {
 			}
 			// print each record.
 			consumerRecords.forEach(record -> {
-				System.out.println("Record Key " + record.key());
-				System.out.println("Record value " + record.value());
-				System.out.println("Record partition " + record.partition());
-				System.out.println("Record offset " + record.offset());
+				logger.info("Record Key ", record.key());
+				logger.info("Record value ", record.value());
+				logger.info("Record partition ", record.partition());
+				logger.info("Record offset ", record.offset());
 			});
 			// commits the offset of record to broker.
 			consumer.commitAsync();

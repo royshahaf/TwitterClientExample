@@ -9,6 +9,11 @@ import org.apache.kafka.common.serialization.StringSerializer;
 
 public class KafkaProps {
 	private static final String PREFIX = "twitter.example.";
+
+	private KafkaProps() {
+
+	}
+
 	public static Properties getKafkaProducerProps() {
 		String kafkaBrokers = getKafkaBrokers();
 		String clienId = System.getenv(PREFIX + "clienId");
@@ -22,6 +27,7 @@ public class KafkaProps {
 		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
 		return props;
 	}
+
 	private static String getKafkaBrokers() {
 		String kafkaBrokers = System.getenv(PREFIX + "kafkaBrokers");
 		if (kafkaBrokers == null) {
@@ -29,19 +35,20 @@ public class KafkaProps {
 		}
 		return kafkaBrokers;
 	}
+
 	public static Properties getKafkaConsumerProps() {
 		Properties props = new Properties();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, getKafkaBrokers());
-        String groupIdConfig = System.getenv(PREFIX + "groupIdConfig");
+		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, getKafkaBrokers());
+		String groupIdConfig = System.getenv(PREFIX + "groupIdConfig");
 		if (groupIdConfig == null) {
 			groupIdConfig = "consumerGroup1";
 		}
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, groupIdConfig);
-        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 1);
-        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
-        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
-        return props;
+		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
+		props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, 1);
+		props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
+		props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "latest");
+		return props;
 	}
 }
