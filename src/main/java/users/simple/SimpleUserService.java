@@ -63,12 +63,12 @@ public class SimpleUserService implements UserService {
 			Set<Topic> topics = user.getTopics();
 			Topic topic = new Topic(topicName);
 			if (!topics.contains(topic)) {
-				return new Result(false, "Topic doesn't exists");
+				return new Result(false, "Topic doesn't exist");
 			} else {
 				topics.remove(topic);
 				User newUser = new User(user.getName(), topics, user.getRoles());
 				users.put(requestedUsername, newUser);
-				return new Result(true, "Topic delete");
+				return new Result(true, "Topic deleted");
 			}
 		}
 	}
@@ -88,7 +88,7 @@ public class SimpleUserService implements UserService {
 				topics.add(new Topic(newTopic));
 				User newUser = new User(user.getName(), topics, user.getRoles());
 				users.put(requestedUsername, newUser);
-				return new Result(true, "Topic delete");
+				return new Result(true, "Topic edited");
 			}
 		}
 	}

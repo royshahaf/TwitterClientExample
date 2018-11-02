@@ -5,7 +5,7 @@ import mongo.MongoParams;
 import server.HttpServerApi;
 import server.SecurityParams;
 
-public class App {
+public class TopicsManager {
 	private static final String PREFIX = "twitter.example.";
 	private static final HttpServerApi api = new HttpServerApi();
 
