@@ -1,4 +1,22 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+It implements a simple client for our twitter application.
+It features two tabs (one for tweets and another for topics management) as well as a header.
+
+## Notable dependencies
+1. [react-tabs](https://github.com/reactjs/react-tabs) - Simple tabs component
+2. [material-ui](https://material-ui.com/) - Used to make some components look better
+3. [axios](https://www.npmjs.com/package/axios) - Promise based HTTP client for the browser and node.js
+4. [react-alert](https://www.npmjs.com/package/react-alert) - Used to notify users of suspected errors
+5. [react-tweet](https://www.npmjs.com/package/react-tweet) - Display a tweet in a prettier way
+6. [react-websocket](https://www.npmjs.com/package/react-websocket) - Consume tweets via websocket
+
+## Limitations
+1. Currently has some hardcoded values:
+    1. location of server side applications must be localhost
+    2. port of topics management must be 8080
+    3. port of tweeter websocket must be 8090
+2. No authentication means that users can easily "pretend" to be other users
+3. With the current implementation, a user will see all the tweets that interest at least one of the users (since we use one twitter stream and broadcast the messages we get from it to all of our websocket sessions)
 
 ## Available Scripts
 
