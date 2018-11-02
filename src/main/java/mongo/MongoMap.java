@@ -104,7 +104,6 @@ public class MongoMap implements Map<String, User> {
 		User previous = get(arg0);
 		if (previous == null) {
 			collection.insertOne(arg1);
-			System.out.println("ONCE");
 		} else {
 			collection.updateOne(eq("name", arg0), new Document("$set", arg1));
 		}

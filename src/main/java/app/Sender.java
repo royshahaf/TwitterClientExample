@@ -1,0 +1,7 @@
+package app;
+
+public interface Sender<T> {
+
+	public void send(T message);
+	
+}

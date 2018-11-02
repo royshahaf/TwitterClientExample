@@ -3,9 +3,15 @@ package app;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+
+import kafka.KafkaSender;
 import mongo.MongoMap;
 import mongo.MongoParams;
+import server.MyModule;
 import twitter.StreamTweets;
+import twitter4j.Status;
 import users.Topic;
 
 public class TweetSender {
@@ -19,8 +25,8 @@ public class TweetSender {
 		}
 		MongoParams mongoParams = MongoParams.getMongoParams(PREFIX);
 		MongoMap mongoMap = new MongoMap(mongoParams);
-		System.out.println(repeats);
-		StreamTweets stream = new StreamTweets();
+		Sender<Status> sender = new KafkaSender();
+		StreamTweets stream = new StreamTweets(sender);
 		for (int i = 0; repeats == 0 || i < repeats; i++) {
 			Set<String> topics = mongoMap.values().stream().map(user -> user.getTopics()).flatMap(set -> set.stream())
 					.collect(Collectors.toSet()).stream().map(Topic::getName).collect(Collectors.toSet());
@@ -29,7 +35,6 @@ public class TweetSender {
 				topics.toArray(array);
 				stream.filter(array);
 				currentTopics = topics;
-				System.out.println(currentTopics);
 			}
 			Thread.sleep(10000);
 		}
