@@ -29,10 +29,10 @@ public class KafkaReceiver {
 			}
 			// print each record.
 			consumerRecords.forEach(record -> {
-				logger.info("Record Key ", record.key());
-				logger.info("Record value ", record.value());
-				logger.info("Record partition ", record.partition());
-				logger.info("Record offset ", record.offset());
+				logger.info("Record Key {}", record.key());
+				logger.info("Record value {}", record.value());
+				logger.info("Record partition {}", record.partition());
+				logger.info("Record offset {}", record.offset());
 			});
 			// commits the offset of record to broker.
 			consumer.commitAsync();
