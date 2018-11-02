@@ -19,8 +19,12 @@ public class KafkaReceiver {
 	}
 
 	public static void main(String[] args) {
+		int repeats = 0;
+		if (args.length > 0) {
+			repeats = Integer.parseInt(args[0]);
+		}
 		Consumer<String, String> consumer = createConsumer();
-		while (true) {
+		for (int i = 0; repeats == 0 || i < repeats; i++) {
 			ConsumerRecords<String, String> consumerRecords = consumer.poll(1000);
 			// 1000 is the time in milliseconds consumer will wait if no record is found at
 			// broker.
