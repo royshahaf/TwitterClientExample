@@ -44,22 +44,22 @@ public class HttpServerApi {
 			get("/view/:requesting/:requested", (request, response) -> {
 				Result result = api.view(request.params(REQUESTING), request.params(REQUESTED));
 				return handleResult(response, result);
-			});
+			}, new JsonTransformer());
 			put("/add/:requesting/:requested/:topic", (request, response) -> {
 				Result result = api.add(request.params(REQUESTING), request.params(REQUESTED),
 						request.params(":topic"));
 				return handleResult(response, result);
-			});
+			}, new JsonTransformer());
 			delete("/delete/:requesting/:requested/:topic", (request, response) -> {
 				Result result = api.delete(request.params(REQUESTING), request.params(REQUESTED),
 						request.params(":topic"));
 				return handleResult(response, result);
-			});
+			}, new JsonTransformer());
 			post("/edit/:requesting/:requested/:previousTopic/:newTopic", (request, response) -> {
 				Result result = api.edit(request.params(REQUESTING), request.params(REQUESTED),
 						request.params(":previousTopic"), request.params(":newTopic"));
 				return handleResult(response, result);
-			});
+			}, new JsonTransformer());
 		});
 	}
 
