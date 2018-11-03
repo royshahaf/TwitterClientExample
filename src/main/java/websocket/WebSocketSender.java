@@ -1,12 +1,11 @@
 package websocket;
 
 import static spark.Spark.*;
-import static spark.Spark.options;
-import static spark.Spark.port;
 
 import com.google.gson.Gson;
 
 import app.Sender;
+import server.SecurityParams;
 import twitter4j.Status;
 
 public class WebSocketSender implements Sender<Status> {
@@ -15,6 +14,11 @@ public class WebSocketSender implements Sender<Status> {
 
 	public WebSocketSender() {
 		int port = getPort();
+		SecurityParams params = SecurityParams.getSecurityParams(PREFIX);
+		if (params.isSecure()) {
+			secure(params.getKeystoreFilePath(), params.getKeystorePassword(), params.getTruststoreFilePath(),
+					params.getTruststorePassword());
+		}
 		port(port);
 		webSocket("/tweets", TwitterWebSocket.class);
 		enableCors();
