@@ -83,8 +83,8 @@ public abstract class TestAbstractUserService {
 	public void testView() {
 		userService.addTopic(adminUser.getName(), "topic");
 		userService.addTopic(regularUser.getName(), "topic2");
-		assertEquals(getExpected("topic"), userService.getTopics(adminUser.getName()));
-		assertEquals(getExpected("topic2"), userService.getTopics(regularUser.getName()));
+		assertEquals(getExpected("topic").toString(), userService.getTopics(adminUser.getName()).toString());
+		assertEquals(getExpected("topic2").toString(), userService.getTopics(regularUser.getName()).toString());
 		assertFalse(userService.getTopics("non-existing").isStatus());
 	}
 

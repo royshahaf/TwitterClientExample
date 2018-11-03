@@ -16,6 +16,8 @@ import org.eclipse.jetty.client.api.ContentResponse;
 import org.eclipse.jetty.http.HttpMethod;
 import org.junit.Test;
 
+import com.google.gson.Gson;
+
 import roles.Role;
 import spark.Spark;
 import users.Topic;
@@ -26,7 +28,8 @@ public class TestHttpServer {
 			new HashSet<>(Arrays.asList(Role.ADMIN, Role.REGULAR)));
 	private User regularUser = new User("roy", Collections.<Topic>emptySet(),
 			new HashSet<>(Arrays.asList(Role.REGULAR)));
-
+	private Gson gson = new Gson();
+	
 	public Map<String, User> getTestUsers() {
 		Map<String, User> testUsers = new HashMap<>();
 		testUsers.put(adminUser.getName(), adminUser);
@@ -45,32 +48,32 @@ public class TestHttpServer {
 			Set<Topic> set = new HashSet<>();
 			ContentResponse viewed = safelyView(httpClient, httpServer.getPort());
 			assertEquals(200, viewed.getStatus());
-			assertEquals(set.toString(), viewed.getContentAsString());
+			assertEquals(gson.toJson(set), viewed.getContentAsString());
 			httpClient.newRequest("http://0.0.0.0:" + httpServer.getPort() + "/topics/add/adam/adam/topic1")
 					.method(HttpMethod.PUT).send();
 			viewed = safelyView(httpClient, httpServer.getPort());
 			assertEquals(200, viewed.getStatus());
 			set.add(new Topic("topic1"));
-			assertEquals(set.toString(), viewed.getContentAsString());
+			assertEquals(gson.toJson(set), viewed.getContentAsString());
 			httpClient.newRequest("http://0.0.0.0:" + httpServer.getPort() + "/topics/add/adam/adam/topic2")
 					.method(HttpMethod.PUT).send();
 			viewed = safelyView(httpClient, httpServer.getPort());
 			assertEquals(200, viewed.getStatus());
 			set.add(new Topic("topic2"));
-			assertEquals(set.toString(), viewed.getContentAsString());
+			assertEquals(gson.toJson(set), viewed.getContentAsString());
 			httpClient.newRequest("http://0.0.0.0:" + httpServer.getPort() + "/topics/delete/adam/adam/topic2")
 					.method(HttpMethod.DELETE).send();
 			viewed = safelyView(httpClient, httpServer.getPort());
 			assertEquals(200, viewed.getStatus());
 			set.remove(new Topic("topic2"));
-			assertEquals(set.toString(), viewed.getContentAsString());
+			assertEquals(gson.toJson(set), viewed.getContentAsString());
 			httpClient.newRequest("http://0.0.0.0:" + httpServer.getPort() + "/topics/edit/adam/adam/topic1/topic3")
 					.method(HttpMethod.POST).send();
 			viewed = safelyView(httpClient, httpServer.getPort());
 			assertEquals(200, viewed.getStatus());
 			set.remove(new Topic("topic1"));
 			set.add(new Topic("topic3"));
-			assertEquals(set.toString(), viewed.getContentAsString());
+			assertEquals(gson.toJson(set), viewed.getContentAsString());
 			viewed = httpClient.GET("http://0.0.0.0:" + httpServer.getPort() + "/topics/view/adam/null");
 			assertEquals(500, viewed.getStatus());
 		} finally {

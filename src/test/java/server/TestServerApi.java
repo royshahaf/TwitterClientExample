@@ -29,6 +29,7 @@ public class TestServerApi {
 	private ServerApi api;
 	private User adminUser;
 	private User regularUser;
+	private JsonTransformer transformer = new JsonTransformer();
 
 	@Before
 	public void init() {
@@ -108,10 +109,10 @@ public class TestServerApi {
 	public void testView() {
 		api.add(adminUser.getName(), adminUser.getName(), "topic");
 		api.add(regularUser.getName(), regularUser.getName(), "topic2");
-		assertEquals(getExpected("topic"), api.view(adminUser.getName(), adminUser.getName()));
-		assertEquals(getExpected("topic2"), api.view(regularUser.getName(), regularUser.getName()));
-		assertEquals(getExpected("topic2"), api.view(adminUser.getName(), regularUser.getName()));
-		assertEquals(getExpectedFailure(), api.view(regularUser.getName(), adminUser.getName()));
+		assertEquals(getExpected("topic").toString(), api.view(adminUser.getName(), adminUser.getName()).toString());
+		assertEquals(getExpected("topic2").toString(), api.view(regularUser.getName(), regularUser.getName()).toString());
+		assertEquals(getExpected("topic2").toString(), api.view(adminUser.getName(), regularUser.getName()).toString());
+		assertEquals(getExpectedFailure().toString(), api.view(regularUser.getName(), adminUser.getName()).toString());
 		assertFalse(api.view("non-existing", "non-existing").isStatus());
 		assertFalse(api.view(adminUser.getName(), "non-existing").isStatus());
 	}
@@ -119,7 +120,7 @@ public class TestServerApi {
 	private Result getExpected(String string) {
 		return new Result(true, new HashSet<>(Collections.singleton(new Topic(string))).toString());
 	}
-	
+
 	private Result getExpectedFailure() {
 		return new Result(false, ServerApi.ACCESS_DENIED);
 	}
