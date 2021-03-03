@@ -33,6 +33,7 @@ public class MongoParams {
 		MongoParams params = new MongoParams();
 		params.connectionString = System.getenv(prefix + "connectionString");
 		params.databaseName = System.getenv(prefix + "databaseName");
+		System.out.println(params.databaseName);
 		params.collectionName = System.getenv(prefix + "collectionName");
 		return params;
 	}

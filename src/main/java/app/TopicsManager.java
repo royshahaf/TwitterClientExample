@@ -6,7 +6,7 @@ import server.HttpServerApi;
 import server.SecurityParams;
 
 public class TopicsManager {
-	private static final String PREFIX = "twitter.example.";
+	private static final String PREFIX = "";
 	private static final HttpServerApi api = new HttpServerApi();
 
 	public static void main(String[] args) {

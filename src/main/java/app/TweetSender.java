@@ -11,7 +11,7 @@ import users.Topic;
 import websocket.WebSocketSender;
 
 public class TweetSender {
-	private static final String PREFIX = "twitter.example.";
+	private static final String PREFIX = "";
 	private static Set<String> currentTopics = null;
 
 	public static void main(String[] args) throws InterruptedException {

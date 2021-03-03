@@ -1,12 +1,25 @@
-import React, { Component } from 'react'
-import ReactDOM from 'react-dom';
+import { Component } from 'react'
 import './index.css';
 import { Provider as AlertProvider } from 'react-alert'
 import AlertTemplate from 'react-alert-template-basic'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+var React = require('react')
+var createReactClass = require('create-react-class');
 
-// optional cofiguration
+    module.exports=createReactClass({
+            render:function(){
+                return(
+                    <div>
+                        <h1> the list  </h1>
+                    </div>   
+                )
+            })
+
+var ReactDOM = require('react-dom'); 
+ReactDOM.render(<GroceryItemList/>,app);
+
+	    // optional cofiguration
 const options = {
     position: 'bottom center',
     timeout: 5000,

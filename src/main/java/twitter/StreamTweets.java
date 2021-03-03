@@ -5,16 +5,26 @@ import org.slf4j.LoggerFactory;
 
 import app.Sender;
 import twitter4j.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class StreamTweets {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
+	private final SentimentAnalyzer sentimentAnalyzer = new SentimentAnalyzer();
+
+	private final Map<String, Integer> sentimentCounters = new HashMap<>();
+
 	private final TwitterStream twitterStream = new TwitterStreamFactory().getInstance()
 			.addListener(new StatusListener() {
 				@Override
 				public void onStatus(Status status) {
-					logger.info("@{} - {}", status.getUser().getScreenName(), status.getText());
+					TweetWithSentiment tweetWithSentiment = sentimentAnalyzer.findSentiment(status.getText());
+					String sentiment = tweetWithSentiment.getCssClass();
+					sentimentCounters.merge(sentiment, 1, Integer::sum);
+					logger.info("@{} - {}, {} / {}", status.getUser().getScreenName(), sentiment, sentimentCounters.get(sentiment), sentimentCounters.values().stream().reduce(0, Integer::sum)); 
+					logger.debug("@{} - {}", status.getUser().getScreenName(), tweetWithSentiment);
 					sender.send(status);
 				}
 
