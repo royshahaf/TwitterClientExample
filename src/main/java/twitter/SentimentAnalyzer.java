@@ -31,9 +31,9 @@ public class SentimentAnalyzer {
             }
         }
         if (mainSentiment > 4 || mainSentiment < 0) {
-            return new TweetWithSentiment(line, "Unknown");
+            return new TweetWithSentiment(line, "Unknown", -1);
         }
-        TweetWithSentiment tweetWithSentiment = new TweetWithSentiment(line, toCss(mainSentiment));
+        TweetWithSentiment tweetWithSentiment = new TweetWithSentiment(line, toCss(mainSentiment), mainSentiment);
         return tweetWithSentiment;
     }
 
