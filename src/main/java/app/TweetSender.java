@@ -5,8 +5,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.codahale.metrics.MetricRegistry;
-import com.izettle.metrics.influxdb.InfluxDbHttpSender;
-import com.izettle.metrics.influxdb.InfluxDbReporter;
+import com.codahale.metrics.Slf4jReporter;
 import mongo.MongoMap;
 import mongo.MongoParams;
 import twitter.StreamTweets;
@@ -24,7 +23,7 @@ public class TweetSender {
             repeats = Integer.parseInt(args[1]);
         }
         MetricRegistry metrics = new MetricRegistry();
-        InfluxDbReporter reporter = InfluxDbReporter.forRegistry(metrics).build(new InfluxDbHttpSender("http", "127.0.0.1", 8086, "hello", args[0], TimeUnit.SECONDS));
+        Slf4jReporter reporter = Slf4jReporter.forRegistry(metrics).build();
         reporter.start(1, TimeUnit.SECONDS);
         MongoParams mongoParams = MongoParams.getMongoParams(PREFIX);
         MongoMap mongoMap = new MongoMap(mongoParams);
