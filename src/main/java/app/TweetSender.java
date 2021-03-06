@@ -25,6 +25,7 @@ public class TweetSender {
         }
         MetricRegistry metrics = new MetricRegistry();
         InfluxDbReporter reporter = InfluxDbReporter.forRegistry(metrics).build(new InfluxDbHttpSender("http", "127.0.0.1", 8086, "hello", args[0], TimeUnit.SECONDS));
+        reporter.start(1, TimeUnit.SECONDS);
         MongoParams mongoParams = MongoParams.getMongoParams(PREFIX);
         MongoMap mongoMap = new MongoMap(mongoParams);
         Sender<Status> sender = new WebSocketSender();
