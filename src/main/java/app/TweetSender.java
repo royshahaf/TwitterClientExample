@@ -24,11 +24,11 @@ public class TweetSender {
         }
         MetricRegistry metrics = new MetricRegistry();
         Slf4jReporter reporter = Slf4jReporter.forRegistry(metrics).build();
-        reporter.start(1, TimeUnit.SECONDS);
+        reporter.start(10, TimeUnit.SECONDS);
         MongoParams mongoParams = MongoParams.getMongoParams(PREFIX);
         MongoMap mongoMap = new MongoMap(mongoParams);
         Sender<Status> sender = new WebSocketSender();
-        StreamTweets stream = new StreamTweets(sender, metrics.histogram("sentiment"));
+        StreamTweets stream = new StreamTweets(sender, metrics);
         for (int i = 0; repeats == 0 || i < repeats; i++) {
             Set<String> topics = mongoMap.values().stream().map(user -> user.getTopics()).flatMap(set -> set.stream())
                     .collect(Collectors.toSet()).stream().map(Topic::getName).collect(Collectors.toSet());

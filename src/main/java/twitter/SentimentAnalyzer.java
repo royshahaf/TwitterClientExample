@@ -37,8 +37,10 @@ public class SentimentAnalyzer {
         return tweetWithSentiment;
     }
 
-    private String toCss(int sentiment) {
+    public static String toCss(int sentiment) {
         switch (sentiment) {
+            case -1:
+                return "Unknown";
             case 0:
                 return "Very Negative";
             case 1:

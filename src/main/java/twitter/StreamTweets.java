@@ -1,6 +1,7 @@
 package twitter;
 
-import com.codahale.metrics.Histogram;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,8 +25,8 @@ public class StreamTweets {
 					TweetWithSentiment tweetWithSentiment = sentimentAnalyzer.findSentiment(status.getText());
 					String sentiment = tweetWithSentiment.getCssClass();
 					sentimentCounters.merge(sentiment, 1, Integer::sum);
-					logger.info("@{} - {}, {} / {}", status.getUser().getScreenName(), sentiment, sentimentCounters.get(sentiment), sentimentCounters.values().stream().reduce(0, Integer::sum));
-					sentimentHistogram.update(tweetWithSentiment.getSentiment());
+					logger.debug("@{} - {}, {} / {}", status.getUser().getScreenName(), sentiment, sentimentCounters.get(sentiment), sentimentCounters.values().stream().reduce(0, Integer::sum));
+					meters.get(SentimentAnalyzer.toCss(tweetWithSentiment.getSentiment())).mark();
 					logger.debug("@{} - {}", status.getUser().getScreenName(), tweetWithSentiment);
 					sender.send(status);
 				}
@@ -56,12 +57,15 @@ public class StreamTweets {
 				}
 			});
 
-	private final Histogram sentimentHistogram;
+	private final Map<String, Meter> meters;
 	private final Sender<Status> sender;
 
-	public StreamTweets(Sender<Status> sender, Histogram sentiment) {
+	public StreamTweets(Sender<Status> sender, MetricRegistry metrics) {
 		this.sender = sender;
-		this.sentimentHistogram = sentiment;
+		meters = new HashMap<>();
+		for (int i = -1; i < 5; i++) {
+			meters.put(SentimentAnalyzer.toCss(i), metrics.meter(SentimentAnalyzer.toCss(i)));
+		}
 	}
 
 	public void filter(String... topics) {
